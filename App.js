@@ -4,6 +4,7 @@ import Timer from './src/components/timer';
 import { useEffect, useState } from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
 
+// Get Dimensions for Responsiveness
 const { width, height } = Dimensions.get('window');
 
 export default function App() {

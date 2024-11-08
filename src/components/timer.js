@@ -3,9 +3,12 @@ import { View, Text, Alert, StyleSheet, TextInput, Pressable, Modal, Button, Tou
 import AntDesign from '@expo/vector-icons/AntDesign';
 import Entypo from '@expo/vector-icons/Entypo';
 
+// Dimensions api for responsiveness
 const { width, height } = Dimensions.get('window');
 
 const Timer = (props) => {
+  
+  // Timer states and properties
   const [timers, setTimers] = useState([
     { id: props.id, timeLeft: props.timeLeft, isRunning: false, inputTime: props.inputTime, isVisible: props.isVisible },
   ]);
@@ -20,6 +23,7 @@ const Timer = (props) => {
     return `${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
   };
 
+  // Start countdown for timers
 useEffect(() => {
   const intervals = timers.map((timer) => {
     if (timer.isRunning && timer.timeLeft > 0) {
@@ -43,29 +47,36 @@ useEffect(() => {
   return () => intervals.forEach(interval => clearInterval(interval));
 }, [timers]);
 
-
+  // Pause Timer
   const toggleTimer = (id) => {
     setTimers(timers.map(t => 
       t.id === id ? { ...t, isRunning: !t.isRunning } : t
     ));
   };
 
+
+  // Reset Timer
   const resetTimer = (id) => setTimers(timers.map(t => t.id === id ? { ...t, timeLeft: t.inputTime, isRunning: false } : t));
 
+
+  //  Open Edit Timer Modal
   const openModal = (id) => {
     setSelectedTimerId(id);
     setIsModalVisible(true);
   };
 
+  // Update time for the Timer
   const handleUpdateTime = () => {
     const totalSeconds = (parseInt(minutes) || 0) * 60 + (parseInt(seconds) || 0);
     if (minutes > 60 || seconds > 60) {
+
+      // Check for valid time input
       return Alert.alert("Please enter a valid time.");
     }
     if (totalSeconds > 0) {
       const updatedTimers = timers.map(t => 
         t.id === selectedTimerId ? { ...t, inputTime: totalSeconds, timeLeft: totalSeconds, isRunning: false } : t
-      );
+      ); // Set updated value for the selected timer.
       setTimers(updatedTimers);
       setIsModalVisible(false);
       setMinutes('');
@@ -75,6 +86,8 @@ useEffect(() => {
     }
   };
 
+
+  // Get the selected timer
   const selectTimer = (id) => setSelectedTimerId(id);
 
   return (
@@ -89,6 +102,7 @@ useEffect(() => {
               <Text style={styles.timerText}>{formatTime(timer.timeLeft)}</Text>
             </Pressable>
             <View style={styles.iconRow}>
+                 {/* Buttons for controlling the timer operations */}v
               {timer.isRunning ? (
                 <AntDesign name="pausecircle" size={width * 0.1} color="white" onPress={() => toggleTimer(timer.id)} />
               ) : (
@@ -101,7 +115,10 @@ useEffect(() => {
       ))}
 
       <View style={styles.dotsContainer}>
+
+           {/* Move between timers by clicking on dots */}
         {timers.map(timer => (
+          
           <TouchableOpacity key={timer.id} onPress={() => selectTimer(timer.id)}>
             <View style={[styles.dot, selectedTimerId === timer.id && styles.activeDot]} />
           </TouchableOpacity>
@@ -170,7 +187,7 @@ const styles = StyleSheet.create({
   },
   deleteIcon: {
     position: 'absolute',
-    top: height * -0.10, // 2% from the top
+    top: height * -0.10, // -10% from the top
     right: width * 0.02, // 2% from the right
     zIndex: 1,
   },

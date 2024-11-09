@@ -102,7 +102,7 @@ useEffect(() => {
               <Text style={styles.timerText}>{formatTime(timer.timeLeft)}</Text>
             </Pressable>
             <View style={styles.iconRow}>
-                 {/* Buttons for controlling the timer operations */}v
+                 {/* Buttons for controlling the timer operations */}
               {timer.isRunning ? (
                 <AntDesign name="pausecircle" size={width * 0.1} color="white" onPress={() => toggleTimer(timer.id)} />
               ) : (

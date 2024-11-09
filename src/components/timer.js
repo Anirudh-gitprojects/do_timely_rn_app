@@ -98,6 +98,7 @@ useEffect(() => {
       {timers.map(timer => (
         timer.id === selectedTimerId && (
           <View key={timer.id} style={styles.timerContainer}>
+          <Text style={styles.timerTitle}>TIMER: {timer.id}</Text>
             <Pressable style={styles.timerDisplay} onPress={() => openModal(timer.id)}>
               <Text style={styles.timerText}>{formatTime(timer.timeLeft)}</Text>
             </Pressable>
